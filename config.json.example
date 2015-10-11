@@ -1,0 +1,6 @@
+{
+	"port": "8782",
+	"route": "/planbot",
+	"token": "slash-command-token",
+	"webhookURL": "web-hook-url"
+}
