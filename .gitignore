@@ -1,5 +1,6 @@
 # Project specific
 config.json
+plan-b-ot
 
 # Compiled Object files, Static and Dynamic libs (Shared Objects)
 *.o
