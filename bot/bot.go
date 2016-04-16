@@ -50,7 +50,7 @@ func setTask(userName string, args []string) (response string, status int) {
 
 	err := sendToSlack(
 		"Task set",
-		fmt.Sprintf("@%s set the task to `%s`. All votes ave been reset.", userName, taskName),
+		fmt.Sprintf("@%s set the task to `%s`. All votes have been reset.", userName, taskName),
 		"good",
 	)
 	if err != nil {
@@ -124,7 +124,7 @@ func getResults() (response string, status int) {
 	}
 
 	err := sendToSlack(
-		"Results for task"+currentTask.Name,
+		"Results for task "+currentTask.Name,
 		buffer.String(),
 		"good",
 	)
