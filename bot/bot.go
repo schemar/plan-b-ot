@@ -12,25 +12,37 @@ import (
 	"strconv"
 )
 
+type CommandResponse struct {
+	ResponseType string      `json:"response_type"`
+	Text         string      `json:"text"`
+	GotoLocation string      `json:"goto_location"`
+	Attachments  interface{} `json:"attachments"`
+}
+
 // HandleRequest handles slash commands coming from slack
-func HandleRequest(userName string, args []string) (response string, status int) {
+func HandleRequest(userName string, args []string) (response CommandResponse, status int) {
 	if len(args) < 1 {
-		return "Please define something to do afte the slash command. E.g. `/planbot task T54`", http.StatusBadRequest
+		return CommandResponse{Text: "Please define something to do afte the slash command. E.g. `/planbot task T54`"}, http.StatusBadRequest
 	}
 	action := args[0]
 
-	response = "Unknown Error"
+	responseText := "Unknown Error"
 	status = http.StatusInternalServerError
 
 	if action == "task" {
-		response, status = setTask(userName, args)
+		responseText, status = setTask(userName, args)
 	} else if action == "vote" {
-		response, status = setVote(userName, args)
+		responseText, status = setVote(userName, args)
 	} else if action == "results" {
-		response, status = getResults()
+		responseText, status = getResults()
 	} else {
-		response = fmt.Sprintf("Invalid item after the slash command: `%s`.", action)
+		responseText = fmt.Sprintf("Invalid item after the slash command: `%s`.", action)
 		status = http.StatusBadRequest
+	}
+
+	response = CommandResponse{
+		ResponseType: "ephemeral",
+		Text:         responseText,
 	}
 
 	return response, status
@@ -131,5 +143,5 @@ func getResults() (response string, status int) {
 	if err != nil {
 		return err.Error(), http.StatusInternalServerError
 	}
-	return "Results were printed in slack channel", http.StatusOK
+	return "Results were printed in channel", http.StatusOK
 }

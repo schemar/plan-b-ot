@@ -11,16 +11,20 @@ import (
 	"net/http"
 )
 
-// sendToSlack sends a message to slack using a incoming web hook
+// sendToSlack sends a message to slack using an incoming web hook
 func sendToSlack(title, message, color string) error {
 	attachment := `{
-		"fallback": "` + title + `: ` + message + `",
-		"color": "` + color + `",
-		"fields": [
+		"attachments": [
 			{
-				"title": "` + title + `",
-				"value": "` + message + `",
-				"short": false
+				"fallback": "` + title + `: ` + message + `",
+				"color": "` + color + `",
+				"fields": [
+					{
+						"title": "` + title + `",
+						"value": "` + message + `",
+						"short": false
+					}
+				]
 			}
 		]
 	}`

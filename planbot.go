@@ -6,10 +6,11 @@
 package main
 
 import (
-	"fmt"
-	"github.com/apheleia/plan-b-ot/bot"
+	"encoding/json"
 	"net/http"
 	"strings"
+
+	"github.com/apheleia/plan-b-ot/bot"
 )
 
 // Runs the server listening for the requests
@@ -36,11 +37,17 @@ func planbotHandler(w http.ResponseWriter, r *http.Request) {
 	words := strings.Fields(text)
 
 	response, status := bot.HandleRequest(userName, words)
-
-	if status != http.StatusOK {
-		http.Error(w, response, status)
+	responseJson, err := json.Marshal(response)
+	if err != nil {
+		http.Error(w, "Cannot marshal JSON in plan-b-ot", http.StatusInternalServerError)
 		return
 	}
 
-	fmt.Fprintf(w, response)
+	if status != http.StatusOK {
+		http.Error(w, response.Text, status)
+		return
+	}
+
+	w.WriteHeader(status)
+	w.Write(responseJson)
 }
