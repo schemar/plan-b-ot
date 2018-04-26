@@ -18,11 +18,11 @@ Creates a new task with zero votes and the given name
 
 ```
 /planbot vote <your vote>
-````
+```
 Sets your vote on the current task.
 If you had a vote before, it  gets overriden by the new vote.
 
-````
+```
 /planbot results
 ```
 Orders plan-b-ot to print all the voting results in the specified
